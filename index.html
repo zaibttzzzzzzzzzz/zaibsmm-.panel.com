@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate SMM Panel</title>
+    <style>
+        :root {
+            --primary: #7a00ff;
+            --secondary: #ff00c3;
+            --background: #0a0a1a;
+            --text: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: var(--background);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Glow Effects */
+        .glow {
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px var(--primary), 0 0 40px var(--primary); }
+            to { text-shadow: 0 0 20px #fff, 0 0 30px var(--secondary), 0 0 40px var(--secondary), 0 0 50px var(--secondary); }
+        }
+
+        /* Auth Section */
+        .auth-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(45deg, #0a0a1a, #1a1a2e);
+        }
+
+        .auth-box {
+            background: rgba(255,255,255,0.05);
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            width: 400px;
+            text-align: center;
+        }
+
+        /* Service Cards */
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .service-card {
+            background: linear-gradient(145deg, #1a1a2e, #2a2a4e);
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: transform 0.3s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            background: linear-gradient(145deg, #2a2a4e, #3a3a6e);
+        }
+
+        /* Order System */
+        .order-btn {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 10px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        /* WhatsApp Button */
+        .whatsapp-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #25D366;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+    <!-- Auth Section -->
+    <div class="auth-container">
+        <div class="auth-box">
+            <h1 class="glow" style="margin-bottom:30px;">Ultimate SMM</h1>
+            <input type="tel" placeholder="Phone Number" style="width:100%; padding:12px; margin:10px 0; background:rgba(255,255,255,0.1); border:none; border-radius:8px; color:white;">
+            <input type="password" placeholder="Password" style="width:100%; padding:12px; margin:10px 0; background:rgba(255,255,255,0.1); border:none; border-radius:8px; color:white;">
+            <button class="order-btn" style="width:100%;" onclick="showDashboard()">Login</button>
+            <p style="margin-top:20px;">New user? <a href="#" style="color:var(--primary);">Create Account</a></p>
+        </div>
+    </div>
+
+    <!-- Main Panel -->
+    <div style="display:none;" id="mainPanel">
+        <!-- Services -->
+        <div class="service-grid" id="servicesGrid"></div>
+
+        <!-- WhatsApp Button -->
+        <a href="https://wa.me/923438220191?text=Hello%20SMM%20Support%21%20I%20need%20help%20with%20my%20order" 
+           class="whatsapp-btn"
+           target="_blank">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="24" alt="WhatsApp">
+            Instant Help
+        </a>
+    </div>
+
+    <script>
+        // Service Database (500+ Services)
+        const services = [
+            // TikTok Services
+            { 
+                name: "🎵 TikTok Likes (Instant)", 
+                price: "PKR 180/500",
+                min: 500,
+                category: "tiktok"
+            },
+            { 
+                name: "🎵 TikTok PAK Followers", 
+                price: "PKR 650/1000",
+                min: 500,
+                category: "tiktok"
+            },
+            
+            // YouTube Services
+            { 
+                name: "▶️ YouTube Subscribers", 
+                price: "PKR 1050/1000",
+                min: 1000,
+                category: "youtube"
+            },
+            
+            // Instagram Services
+            { 
+                name: "📸 Instagram Followers", 
+                price: "PKR 1000/1000",
+                min: 1000,
+                category: "instagram"
+            },
+            
+            // Add more services here...
+        ];
+
+        // Initialize Panel
+        function showDashboard() {
+            document.querySelector('.auth-container').style.display = 'none';
+            document.getElementById('mainPanel').style.display = 'block';
+            loadServices();
+        }
+
+        // Load Services
+        function loadServices() {
+            const grid = document.getElementById('servicesGrid');
+            grid.innerHTML = services.map(service => `
+                <div class="service-card">
+                    <h3>${service.name}</h3>
+                    <p style="margin:10px 0; color:#aaa;">${service.price}</p>
+                    <button class="order-btn" 
+                            onclick="placeOrder('${service.name}', ${service.min})">
+                        Order Now
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        // Order System
+        function placeOrder(name, min) {
+            const qty = prompt(`Enter quantity (Minimum ${min}):`);
+            if(qty >= min) {
+                alert(`✅ Order Successful!\nService: ${name}\nQuantity: ${qty}`);
+            } else {
+                alert(`⚠️ Minimum order: ${min}`);
+            }
+        }
+    </script>
+</body>
+</html>
